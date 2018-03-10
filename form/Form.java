@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.util.*;
 import ball.Ball;
 import java.awt.event.*;
+import java.awt.geom.*;
 
 class Scene extends JPanel{
     private java.util.List<Ball> listBalls = new ArrayList<>();
@@ -23,6 +24,8 @@ class Scene extends JPanel{
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         
+        System.out.println("draw");
+        
         g.drawString("hello", 100, 100);
         
         Graphics2D g2d = (Graphics2D)g;
@@ -31,6 +34,22 @@ class Scene extends JPanel{
             g2d.fill(b.getEllipse());
             g2d.draw(b.getEllipse());
         }
+    }
+    
+    public void flashing(){
+        Random r = new Random();
+        for(Ball b : listBalls){
+            int dx = r.nextInt(100), dy = r.nextInt(100);
+            int kx = r.nextInt(100) > 50 ? 1 : -1;
+            int ky = r.nextInt(100) > 50 ? 1 : -1;
+            dx *= kx;
+            dy *= ky;
+            
+            Point2D.Double p = b.getLocation();
+            p.setLocation(p.getX() + dx, p.getY() + dy);
+            b.setLocation(p);
+        }
+        repaint();
     }
 }
 
@@ -57,7 +76,7 @@ public class Form extends JFrame{
         setVisible(true);
     }
     
-    private void locateComponents(){
+    private void locateComponents() {
         setLayout(new GridBagLayout());
         JPanel panel = new JPanel();
                 
@@ -80,6 +99,14 @@ public class Form extends JFrame{
         
         buttons.setLayout(new GridBagLayout());
         JButton start = new JButton("start");
+        start.addActionListener( (event) -> {
+            for(int i = 0; i < 1000; ++i){
+                scene.flashing();
+                try{
+                    Thread.sleep(100);
+                }catch(InterruptedException e){}
+            }
+        });
         GridBagConstraints cstart = getConstraints(0,0,0,0,1,1);
         buttons.add(start, cstart);
         

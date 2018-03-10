@@ -14,8 +14,14 @@ public class Ball{
         color = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
     }
     
-    public void setPosition(double x, double y){
-        e.setFrame(x, y, 30, 30);
+    public void setLocation(Point2D.Double p){
+        //System.out.println(e.getX() + "-" + e.getY() + " old");
+        e = new Ellipse2D.Double(p.getX(), p.getY(), 30, 30);
+        //System.out.println(e.getX() + "-" + e.getY() + " new");
+    }
+    
+    public Point2D.Double getLocation(){
+        return new Point2D.Double(e.getX(), e.getY());
     }
     
     public Color getColor(){
