@@ -49,7 +49,7 @@ class Scene extends JPanel{
             p.setLocation(p.getX() + dx, p.getY() + dy);
             b.setLocation(p);
         }
-        repaint();
+        //repaint();
     }
 }
 
