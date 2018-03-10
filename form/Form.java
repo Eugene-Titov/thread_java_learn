@@ -39,7 +39,7 @@ class Scene extends JPanel{
     public void flashing(){
         Random r = new Random();
         for(Ball b : listBalls){
-            int dx = r.nextInt(100), dy = r.nextInt(100);
+            int dx = r.nextInt(5), dy = r.nextInt(5);
             int kx = r.nextInt(100) > 50 ? 1 : -1;
             int ky = r.nextInt(100) > 50 ? 1 : -1;
             dx *= kx;
@@ -102,6 +102,7 @@ public class Form extends JFrame{
         start.addActionListener( (event) -> {
             for(int i = 0; i < 1000; ++i){
                 scene.flashing();
+                scene.paint(scene.getGraphics());
                 try{
                     Thread.sleep(100);
                 }catch(InterruptedException e){}

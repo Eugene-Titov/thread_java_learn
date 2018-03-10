@@ -15,9 +15,7 @@ public class Ball{
     }
     
     public void setLocation(Point2D.Double p){
-        //System.out.println(e.getX() + "-" + e.getY() + " old");
         e = new Ellipse2D.Double(p.getX(), p.getY(), 30, 30);
-        //System.out.println(e.getX() + "-" + e.getY() + " new");
     }
     
     public Point2D.Double getLocation(){
