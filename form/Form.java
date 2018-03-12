@@ -24,7 +24,7 @@ class Scene extends JPanel{
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         
-        System.out.println("draw");
+        //System.out.println("draw");
         
         g.drawString("hello", 100, 100);
         
@@ -56,6 +56,7 @@ class Scene extends JPanel{
 public class Form extends JFrame{
 
     private Scene scene = null;
+    private Thread t;
 
     public Form(){
         setTitle("thread3");
@@ -99,7 +100,26 @@ public class Form extends JFrame{
         
         buttons.setLayout(new GridBagLayout());
         JButton start = new JButton("start");
+        
+        Runnable r = () -> {
+            try{
+                for(int i = 0; i < 1000; ++i){
+                    scene.flashing();
+                    scene.repaint();
+                    Thread.sleep(10);
+                }
+            }catch(InterruptedException e){
+                System.out.println("interrupted");
+            }finally{
+            }
+            
+        };
+        
         start.addActionListener( (event) -> {
+            t = new Thread(r);
+            t.start();
+        });
+        /*start.addActionListener( (event) -> {
             for(int i = 0; i < 1000; ++i){
                 scene.flashing();
                 scene.paint(scene.getGraphics());
@@ -107,13 +127,20 @@ public class Form extends JFrame{
                     Thread.sleep(100);
                 }catch(InterruptedException e){}
             }
-        });
+        });*/
         GridBagConstraints cstart = getConstraints(0,0,0,0,1,1);
         buttons.add(start, cstart);
         
         JButton stop = new JButton("stop");
         GridBagConstraints cstop = getConstraints(0,0,1,0,1,1);
         buttons.add(stop, cstop);
+        stop.addActionListener( (event) -> { 
+            t.interrupt();
+            try{
+                t.join();
+            }catch(InterruptedException e){}
+            //System.exit(0); 
+        } );
         
         pack();
     }
